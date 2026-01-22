@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - TaskFlow</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-page">
+    <nav class="dashboard-nav">
+        <div class="nav-container">
+            <div class="logo">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                    <rect width="32" height="32" rx="8" fill="url(#gradient4)"/>
+                    <path d="M9 16L14 21L23 11" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <defs>
+                        <linearGradient id="gradient4" x1="0" y1="0" x2="32" y2="32">
+                            <stop offset="0%" stop-color="#6366f1"/>
+                            <stop offset="100%" stop-color="#8b5cf6"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <span>TaskFlow</span>
+            </div>
+            <div class="nav-right">
+                <div class="user-menu">
+                    <div class="user-avatar"><%= username.charAt(0).toUpperCase() %></div>
+                    <span class="user-name">Hi, <%= username %>!</span>
+                </div>
+                <a href="/logout" class="btn btn-ghost">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                        <path d="M13 13L16 10L13 7M16 10H6M11 13V14C11 15.1046 10.1046 16 9 16H4C2.89543 16 2 15.1046 2 14V6C2 4.89543 2.89543 4 4 4H9C10.1046 4 11 4.89543 11 6V7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <div>
+                <h1>My Tasks</h1>
+                <p>Manage and track your daily tasks</p>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    📋
+                </div>
+                <div class="stat-info">
+                    <div class="stat-value"><%= stats.total %></div>
+                    <div class="stat-label">Total Tasks</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                    ⏳
+                </div>
+                <div class="stat-info">
+                    <div class="stat-value"><%= stats.pending %></div>
+                    <div class="stat-label">Pending</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                    🚀
+                </div>
+                <div class="stat-info">
+                    <div class="stat-value"><%= stats.inProgress %></div>
+                    <div class="stat-label">In Progress</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                    ✅
+                </div>
+                <div class="stat-info">
+                    <div class="stat-value"><%= stats.completed %></div>
+                    <div class="stat-label">Completed</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            <div class="task-form-card">
+                <h2>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
+                        <path d="M12 8V16M8 12H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    Create New Task
+                </h2>
+                <form action="/tasks" method="POST" class="modern-form">
+                    <div class="form-group">
+                        <label>Task Title</label>
+                        <input type="text" name="title" placeholder="Enter task name..." required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea name="description" placeholder="Add details about this task..." rows="3"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Priority</label>
+                            <select name="priority">
+                                <option value="low">🟢 Low</option>
+                                <option value="medium" selected>🟡 Medium</option>
+                                <option value="high">🔴 High</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Due Date (Optional)</label>
+                            <input type="date" name="dueDate">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                            <path d="M9 3V15M3 9H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        Add Task
+                    </button>
+                </form>
+            </div>
+
+            <div class="tasks-list-card">
+                <h2>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M9 5H7C5.89543 5 5 5.89543 5 7V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V7C19 5.89543 18.1046 5 17 5H15M9 5C9 6.10457 9.89543 7 11 7H13C14.1046 7 15 6.10457 15 5M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 4" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    All Tasks (<%= tasks.length %>)
+                </h2>
+
+                <% if (tasks.length === 0) { %>
+                    <div class="empty-state">
+                        <div class="empty-icon">📝</div>
+                        <h3>No tasks yet</h3>
+                        <p>Create your first task to get started with organizing your work</p>
+                    </div>
+                <% } else { %>
+                    <div class="tasks-list">
+                        <% tasks.forEach(task => { %>
+                            <div class="task-item priority-<%= task.priority %> status-<%= task.status %>">
+                                <div class="task-main">
+                                    <div class="task-checkbox">
+                                        <% if (task.status === 'completed') { %>
+                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                                <circle cx="10" cy="10" r="9" fill="#10b981" stroke="#10b981" stroke-width="2"/>
+                                                <path d="M6 10L9 13L14 7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        <% } else { %>
+                                            <div class="checkbox-empty"></div>
+                                        <% } %>
+                                    </div>
+                                    <div class="task-content">
+                                        <h3 class="<%= task.status === 'completed' ? 'completed-text' : '' %>">
+                                            <%= task.title %>
+                                        </h3>
+                                        <% if (task.description) { %>
+                                            <p><%= task.description %></p>
+                                        <% } %>
+                                        <div class="task-meta">
+                                            <span class="priority-badge <%= task.priority %>">
+                                                <% if (task.priority === 'high') { %>🔴<% } %>
+                                                <% if (task.priority === 'medium') { %>🟡<% } %>
+                                                <% if (task.priority === 'low') { %>🟢<% } %>
+                                                <%= task.priority %>
+                                            </span>
+                                            <% if (task.dueDate) { %>
+                                                <span class="due-date">
+                                                    📅 <%= new Date(task.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) %>
+                                                </span>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="task-actions">
+                                    <form action="/tasks/<%= task._id %>/status" method="POST" class="status-form">
+                                        <select name="status" onchange="this.form.submit()" class="status-select">
+                                            <option value="pending" <%= task.status === 'pending' ? 'selected' : '' %>>⏳ Pending</option>
+                                            <option value="in-progress" <%= task.status === 'in-progress' ? 'selected' : '' %>>🚀 In Progress</option>
+                                            <option value="completed" <%= task.status === 'completed' ? 'selected' : '' %>>✅ Completed</option>
+                                        </select>
+                                    </form>
+                                    <form action="/tasks/<%= task._id %>/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete this task?')">
+                                        <button type="submit" class="btn-icon btn-delete">
+                                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                                <path d="M14 4L4 14M4 4L14 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                            </svg>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
